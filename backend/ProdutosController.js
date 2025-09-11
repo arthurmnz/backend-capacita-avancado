@@ -10,7 +10,7 @@ exports.criarProduto = async (req, res) => {
             preco: preco,
             categoria: categoria,
             descricao: descricao,
-            img: img,
+            img: img
         }
     });
     
@@ -54,7 +54,7 @@ exports.atualizarProduto = async (req, res) => {
             preco: preco,
             categoria: categoria,
             descricao: descricao,
-            img: img,
+            img: img
         }
     })
 
