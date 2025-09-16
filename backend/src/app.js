@@ -11,10 +11,9 @@ const app = express();
 
 app.use(express.json());
 
-// Rota para a documentação da API
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use('/api/auth', authRoutes); // Suas rotas normais
+app.use('/api/auth', authRoutes); 
 app.use('/api/products', produtosRoutes);
 app.use('/api/categories', categoryRoutes);
 

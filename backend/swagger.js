@@ -2,7 +2,7 @@ const swaggerJsdoc = require('swagger-jsdoc');
 
 const options = {
     definition: {
-        openapi: '3.0.0', // Versão da especificação OpenAPI
+        openapi: '3.0.0', 
         info: {
             title: 'Sua API com Prisma',
             version: '1.0.0',
@@ -10,12 +10,12 @@ const options = {
         },
         servers: [
             {
-                url: 'http://localhost:3000/api', // Altere a porta e URL base conforme necessário
+                url: 'http://localhost:3000/api', 
                 description: 'Servidor de Desenvolvimento'
             }
         ],
     },
-    apis: ['./src/routes/*.js', './src/controllers/*.js'], // Caminhos para os arquivos que contêm a documentação
+    apis: ['./src/routes/*.js', './src/controllers/*.js'], 
 };
 
 const swaggerSpec = swaggerJsdoc(options);

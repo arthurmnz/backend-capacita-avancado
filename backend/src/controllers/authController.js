@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
 
-// --- Signup ---
 async function signup(req, res) {
   try {
     const { email, password } = req.body;
@@ -27,7 +26,6 @@ async function signup(req, res) {
   }
 }
 
-// --- Signin ---
 async function signin(req, res) {
   try {
     const { email, password } = req.body;
@@ -52,7 +50,6 @@ async function signin(req, res) {
   }
 }
 
-// --- Me (rota protegida) ---
 async function me(req, res) {
   try {
     const user = await prisma.user.findUnique({

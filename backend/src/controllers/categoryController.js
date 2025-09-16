@@ -1,10 +1,8 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-// Criar Categoria
 const createCategory = async (req, res) => {
   const { nome } = req.body;
-  // Acessa o userId diretamente do req.user
   const userId = req.user.userId;
 
   try {
@@ -16,14 +14,12 @@ const createCategory = async (req, res) => {
     });
     res.status(201).json(newCategory);
   } catch (error) {
-    console.error(error); // Bom para debug
+    console.error(error); 
     res.status(500).json({ error: "Erro ao criar categoria." });
   }
 };
 
-// Ler todas as Categorias do usuário logado
 const getCategories = async (req, res) => {
-  // Acessa o userId diretamente do req.user
   const userId = req.user.userId;
 
   try {
@@ -37,7 +33,6 @@ const getCategories = async (req, res) => {
   }
 };
 
-// Ler uma única Categoria por ID
 const getCategoryById = async (req, res) => {
   const { id } = req.params;
   const userId = req.user.userId;
@@ -47,7 +42,6 @@ const getCategoryById = async (req, res) => {
       where: { id: parseInt(id) },
     });
 
-    // Garante que a categoria pertence ao usuário logado
     if (!category || category.userId !== userId) {
       return res
         .status(404)
@@ -61,14 +55,12 @@ const getCategoryById = async (req, res) => {
   }
 };
 
-// Atualizar Categoria
 const updateCategory = async (req, res) => {
   const { id } = req.params;
   const { nome } = req.body;
   const userId = req.user.userId;
 
   try {
-    // Primeiro, verifica se a categoria existe e pertence ao usuário
     const existingCategory = await prisma.categoria.findUnique({
       where: { id: parseInt(id) },
     });
@@ -91,7 +83,6 @@ const updateCategory = async (req, res) => {
   }
 };
 
-// Deletar Categoria
 const deleteCategory = async (req, res) => {
   const { id } = req.params;
   const userId = req.user.userId;
