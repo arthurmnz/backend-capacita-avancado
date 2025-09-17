@@ -16,10 +16,10 @@ datasource db {
 model Produto{
   id String @id @default( uuid() )
   nome String
-  Preço String
-  Categoria String
-  Descrição String 
-  Img String  
+  preco Float
+  categoria String
+  descricao String
+  img String
 }
 
 model User {
