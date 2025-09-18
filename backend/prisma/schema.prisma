@@ -20,6 +20,8 @@ model Produto{
   Categoria String
   Descrição String 
   Img String  
+
+  CarrinhoItem CarrinhoItem[]
 }
 
 model User {
@@ -36,3 +38,20 @@ model Categoria {
   userId Int
   user User @relation(fields: [userId], references: [id])
 }
+
+model Carrinho {
+  id     Int             @id @default(autoincrement())
+  itens  CarrinhoItem[]  // relação: 1 carrinho → vários itens
+}
+
+model CarrinhoItem {
+  id         Int      @id @default(autoincrement())
+  produtoId  String   // 👈 agora bate com Produto.id
+  quantidade Int
+  carrinhoId Int
+
+  produto    Produto  @relation(fields: [produtoId], references: [id])
+  carrinho   Carrinho @relation(fields: [carrinhoId], references: [id])
+}
+
+
