@@ -2,75 +2,110 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 exports.criarProduto = async (req, res) => {
-  const { nome, preco, categoria, descricao, img } = req.body;
+  const { nome, preco, categoriaId, descricao, img } = req.body;
 
-  const novoprodutoCriado = await prisma.produto.create({
-    data: {
-      nome: nome,
-      preco: preco,
-      categoria: categoria,
-      descricao: descricao,
-      img: img,
-    },
-  });
+  try {
+    const novoprodutoCriado = await prisma.produto.create({
+      data: {
+        nome: nome,
+        preco: preco,
+        descricao: descricao,
+        img: img,
+        categoriaId: parseInt(categoriaId),
+      },
+      include: {
+        categoria: true,
+      },
+    });
 
-  let msg = `O produto ${nome} criado com sucesso!`;
-  console.log(msg);
-  res.status(201).json(novoprodutoCriado);
+    let msg = `O produto ${nome} criado com sucesso!`;
+    console.log(msg);
+    res.status(201).json(novoprodutoCriado);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro ao criar produto." });
+  }
 };
 
 exports.listarProdutos = async (req, res) => {
-  const produtosDoBancoDeDados = await prisma.produto.findMany();
-  console.log(produtosDoBancoDeDados);
-  res.status(200).json(produtosDoBancoDeDados);
+  try {
+    const produtosDoBancoDeDados = await prisma.produto.findMany({
+      include: {
+        categoria: true,
+      },
+    });
+    res.status(200).json(produtosDoBancoDeDados);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro ao listar produtos." });
+  }
 };
 
 exports.buscarProdutoPorId = async (req, res) => {
   const { id } = req.params;
 
-  const produtoDoBanco = await prisma.produto.findFirst({
-    where: {
-      id: parseInt(id),
-    },
-  });
+  try {
+    const produtoDoBanco = await prisma.produto.findFirst({
+      where: {
+        id: id,
+      },
+      include: {
+        categoria: true,
+      },
+    });
 
-  let msg = `produto com id ${id} buscado com sucesso!`;
-  console.log(msg);
-  res.status(200).send(produtoDoBanco);
+    if (!produtoDoBanco) {
+      return res.status(404).json({ error: "Produto não encontrado." });
+    }
+
+    res.status(200).send(produtoDoBanco);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro ao buscar produto." });
+  }
 };
 
 exports.atualizarProduto = async (req, res) => {
   const { id } = req.params;
-  const { nome, preco, categoria, descricao, img } = req.body;
+  const { nome, preco, categoriaId, descricao, img } = req.body;
 
-  const produtoAtualizado = await prisma.produto.update({
-    where: {
-      id: parseInt(id),
-    },
-    data: {
-      nome: nome,
-      preco: preco,
-      categoria: categoria,
-      descricao: descricao,
-      img: img,
-    },
-  });
+  try {
+    const produtoAtualizado = await prisma.produto.update({
+      where: {
+        id: id,
+      },
+      data: {
+        nome: nome,
+        preco: preco,
+        descricao: descricao,
+        img: img,
+        categoriaId: categoriaId ? parseInt(categoriaId) : undefined,
+      },
+      include: {
+        categoria: true,
+      },
+    });
 
-  let msg = `produto com id ${id} atualizado com sucesso!`;
-  console.log(msg);
-  res.status(200).send(produtoAtualizado);
+    res.status(200).send(produtoAtualizado);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro ao atualizar produto." });
+  }
 };
 
 exports.deletarProduto = async (req, res) => {
   const { id } = req.params;
 
-  const produtoDeletado = await prisma.produto.delete({
-    where: {
-      id: parseInt(id),
-    },
-  });
+  try {
+    await prisma.produto.delete({
+      where: {
+        id: id,
+      },
+    });
 
-  let msg = `produto com id ${id} deletado com sucesso!`;
-  console.log(msg);
-  res.status(200).send(produtoDeletado);
+    res.status(204).send();
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro ao deletar produto." });
+  }
 };

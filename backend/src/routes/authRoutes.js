@@ -1,5 +1,5 @@
 const express = require("express");
-const { signup, signin, me } = require("../controllers/authController");
+const authController = require("../controllers/authController");
 const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
@@ -13,7 +13,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /signup:
+ * /auth/signup:
  *   post:
  *     summary: Registrar um novo usuário
  *     tags: [Auth]
@@ -24,17 +24,13 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             required:
- *               - nome
  *               - email
- *               - senha
+ *               - password
  *             properties:
- *               nome:
- *                 type: string
- *                 example: Arthur
  *               email:
  *                 type: string
  *                 example: arthur@email.com
- *               senha:
+ *               password:
  *                 type: string
  *                 example: 123456
  *     responses:
@@ -46,7 +42,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /signin:
+ * /auth/signin:
  *   post:
  *     summary: Autenticar um usuário existente
  *     tags: [Auth]
@@ -58,12 +54,12 @@ const router = express.Router();
  *             type: object
  *             required:
  *               - email
- *               - senha
+ *               - password
  *             properties:
  *               email:
  *                 type: string
  *                 example: arthur@email.com
- *               senha:
+ *               password:
  *                 type: string
  *                 example: 123456
  *     responses:
@@ -83,7 +79,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /me:
+ * /auth/me:
  *   get:
  *     summary: Retorna os dados do usuário autenticado
  *     tags: [Auth]
@@ -110,9 +106,8 @@ const router = express.Router();
  *         description: Token inválido ou não fornecido
  */
 
-
-router.post("/signup", signup);
-router.post("/signin", signin);
-router.get("/me", authMiddleware, me);
+router.post("/signup", authController.signup);
+router.post("/signin", authController.signin);
+router.get("/me", authMiddleware, authController.me);
 
 module.exports = router;

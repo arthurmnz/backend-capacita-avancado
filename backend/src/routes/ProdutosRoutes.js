@@ -11,7 +11,7 @@ const produtosController = require("../controllers/ProdutosController");
 
 /**
  * @swagger
- * /produtos:
+ * /products/produtos:
  *   get:
  *     summary: Lista todos os produtos
  *     tags: [Produtos]
@@ -35,6 +35,10 @@ const produtosController = require("../controllers/ProdutosController");
  *                 type: number
  *               descricao:
  *                 type: string
+ *               img:
+ *                 type: string
+ *               categoriaId:
+ *                 type: integer
  *     responses:
  *       201:
  *         description: Produto criado com sucesso
@@ -42,7 +46,7 @@ const produtosController = require("../controllers/ProdutosController");
 
 /**
  * @swagger
- * /produtos/{id}:
+ * /products/produtos/{id}:
  *   get:
  *     summary: Busca um produto pelo ID
  *     tags: [Produtos]
@@ -103,7 +107,6 @@ const produtosController = require("../controllers/ProdutosController");
  *       404:
  *         description: Produto não encontrado
  */
-
 
 router.get("/produtos", produtosController.listarProdutos);
 router.get("/produtos/:id", produtosController.buscarProdutoPorId);
