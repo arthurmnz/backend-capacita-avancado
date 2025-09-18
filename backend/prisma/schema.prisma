@@ -16,7 +16,7 @@ datasource db {
 model Produto{
   id String @id @default( uuid() )
   nome String
-  Preço String
+  Preco Int
   Categoria String
   Descrição String 
   Img String  
